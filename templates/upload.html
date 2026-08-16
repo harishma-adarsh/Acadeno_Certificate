@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acadeno Certificate Generator</title>
+    <link rel="icon" href="/static/images/Acadeno_Logo_Final.png" type="image/png">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            /* Acadeno brand colors extracted from logo */
+            --orange: #F7821B;
+            --orange-dark: #E5690A;
+            --orange-light: #FEF0E3;
+            --blue: #3B5FD4;
+            --blue-dark: #2A46B8;
+            --blue-light: #EEF1FB;
+            --pink: #D94B84;
+            /* Neutrals */
+            --slate-900: #111827;
+            --slate-700: #374151;
+            --slate-500: #6B7280;
+            --slate-300: #D1D5DB;
+            --slate-200: #E5E7EB;
+            --slate-100: #F3F4F6;
+            --white: #FFFFFF;
+            --green: #059669;
+            --green-bg: #ECFDF5;
+            --red: #DC2626;
+            --red-bg: #FEF2F2;
+            /* Layout */
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-lg: 18px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, .08), 0 1px 2px rgba(0, 0, 0, .05);
+            --shadow: 0 4px 12px rgba(0, 0, 0, .07);
+            --shadow-lg: 0 10px 30px rgba(0, 0, 0, .09);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--slate-100);
+            color: var(--slate-900);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        /* ─── TOPBAR ─── */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            background: var(--white);
+            border-bottom: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-sm);
+            height: 68px;
+            display: flex;
+            align-items: center;
+            padding: 0 48px;
+            gap: 16px;
+        }
+
+        .topbar-logo {
+            height: 42px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .topbar-divider {
+            width: 1px;
+            height: 28px;
+            background: var(--slate-200);
+        }
+
+        .topbar-appname {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--slate-700);
+            letter-spacing: -0.2px;
+        }
+
+        .topbar-appname span {
+            color: var(--orange);
+        }
+
+        .topbar-spacer {
+            flex: 1;
+        }
+
+        .topbar-badge {
+            background: var(--orange-light);
+            color: var(--orange-dark);
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 99px;
+            padding: 4px 12px;
+            letter-spacing: .3px;
+        }
+
+        .btn-reset {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: transparent;
+            color: var(--red);
+            border: 1.5px solid var(--slate-300);
+            border-radius: var(--radius-sm);
+            padding: 8px 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .btn-reset:hover {
+            border-color: var(--red);
+            background: var(--red-bg);
+        }
+
+        /* ─── PAGE BODY ─── */
+        .page-body {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 44px 20px 80px;
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 50%, var(--orange) 100%);
+            border-radius: var(--radius-lg);
+            padding: 40px 48px;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            right: -60px;
+            top: -60px;
+            width: 240px;
+            height: 240px;
+            background: rgba(255, 255, 255, .06);
+            border-radius: 50%;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            left: 30%;
+            bottom: -70px;
+            width: 180px;
+            height: 180px;
+            background: rgba(255, 255, 255, .04);
+            border-radius: 50%;
+        }
+
+        .hero-text h1 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: var(--white);
+            letter-spacing: -0.4px;
+            margin-bottom: 8px;
+        }
+
+        .hero-text p {
+            color: rgba(255, 255, 255, .78);
+            font-size: 0.95rem;
+            max-width: 420px;
+        }
+
+        .hero-logo {
+            height: 90px;
+            width: auto;
+            object-fit: contain;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 4px 16px rgba(0, 0, 0, .25));
+        }
+
+        /* ─── CARDS ─── */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--slate-200);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .card-head {
+            padding: 22px 28px 18px;
+            border-bottom: 1px solid var(--slate-100);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .card-icon-wrap {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+
+        .card-icon-wrap.orange {
+            background: var(--orange-light);
+            color: var(--orange-dark);
+        }
+
+        .card-icon-wrap.blue {
+            background: var(--blue-light);
+            color: var(--blue);
+        }
+
+        .card-icon-wrap.green {
+            background: var(--green-bg);
+            color: var(--green);
+        }
+
+        .card-icon-wrap.slate {
+            background: var(--slate-100);
+            color: var(--slate-700);
+        }
+
+        .card-head-text {}
+
+        .card-head-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--slate-900);
+        }
+
+        .card-head-sub {
+            font-size: 0.8rem;
+            color: var(--slate-500);
+            margin-top: 2px;
+        }
+
+        .card-body {
+            padding: 24px 28px 28px;
+        }
+
+        /* ─── FORM ─── */
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field:last-child {
+            margin-bottom: 0;
+        }
+
+        .field-label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--slate-700);
+            margin-bottom: 8px;
+        }
+
+        .field-label .opt {
+            font-weight: 400;
+            color: var(--slate-500);
+            font-size: 0.8rem;
+        }
+
+        .field-hint {
+            font-size: 0.8rem;
+            color: var(--slate-500);
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .field-hint code {
+            background: var(--slate-100);
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            color: var(--blue);
+        }
+
+        .form-control,
+        .form-select {
+            display: block;
+            width: 100%;
+            border: 1.5px solid var(--slate-300);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: var(--slate-900);
+            background: var(--white);
+            transition: border-color .18s, box-shadow .18s;
+            outline: none;
+            appearance: none;
+        }
+
+        .form-control::placeholder {
+            color: var(--slate-500);
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--orange);
+            box-shadow: 0 0 0 3px rgba(247, 130, 27, .13);
+        }
+
+        .form-select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236B7280' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 40px;
+            cursor: pointer;
+        }
+
+        textarea.form-control {
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            resize: vertical;
+            background: var(--slate-100);
+            min-height: 170px;
+            line-height: 1.75;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* ─── CERT TYPE VISUAL PILLS ─── */
+        .type-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .type-pill input {
+            display: none;
+        }
+
+        .type-pill label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            border: 1.5px solid var(--slate-300);
+            border-radius: 99px;
+            padding: 7px 16px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .18s;
+            user-select: none;
+            color: var(--slate-700);
+            background: var(--white);
+        }
+
+        .type-pill label:hover {
+            border-color: var(--orange);
+            color: var(--orange-dark);
+            background: var(--orange-light);
+        }
+
+        .type-pill input:checked+label {
+            border-color: var(--orange);
+            background: var(--orange-light);
+            color: var(--orange-dark);
+            font-weight: 600;
+        }
+
+        .type-pill .code-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            background: var(--orange);
+            color: white;
+            border-radius: 99px;
+            padding: 1px 7px;
+            letter-spacing: .3px;
+        }
+
+        .type-pill input:checked+label .code-badge {
+            background: var(--orange-dark);
+        }
+
+        /* ─── DROP ZONE ─── */
+        .drop-zone {
+            border: 2px dashed var(--slate-300);
+            border-radius: var(--radius);
+            padding: 36px 20px;
+            text-align: center;
+            background: var(--slate-100);
+            cursor: pointer;
+            transition: all .22s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .drop-zone input[type=file] {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .drop-zone:hover,
+        .drop-zone.hovering {
+            border-color: var(--orange);
+            background: var(--orange-light);
+        }
+
+        .dz-icon-wrap {
+            width: 56px;
+            height: 56px;
+            background: var(--white);
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 14px;
+            font-size: 1.6rem;
+            color: var(--slate-500);
+            box-shadow: var(--shadow-sm);
+            transition: color .22s;
+        }
+
+        .drop-zone:hover .dz-icon-wrap,
+        .drop-zone.hovering .dz-icon-wrap,
+        .drop-zone.file-ready .dz-icon-wrap {
+            color: var(--orange);
+        }
+
+        .drop-zone.file-ready {
+            border-color: var(--green);
+            background: var(--green-bg);
+        }
+
+        .drop-zone.file-ready .dz-icon-wrap {
+            color: var(--green);
+            background: var(--white);
+        }
+
+        .dz-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--slate-700);
+        }
+
+        .dz-sub {
+            font-size: 0.82rem;
+            color: var(--slate-500);
+            margin-top: 4px;
+        }
+
+        /* ─── EXCEL BADGE ─── */
+        .excel-badge {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            background: var(--green-bg);
+            border: 1px solid #6EE7B7;
+            color: var(--green);
+            border-radius: var(--radius-sm);
+            padding: 11px 16px;
+            margin-top: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .excel-badge.show {
+            display: flex;
+        }
+
+        /* ─── SUBMIT ─── */
+        .btn-generate {
+            width: 100%;
+            padding: 15px 24px;
+            background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 1.05rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform .18s, box-shadow .18s;
+            box-shadow: 0 6px 20px rgba(247, 130, 27, .35);
+            margin-top: 4px;
+            letter-spacing: -0.1px;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(247, 130, 27, .45);
+        }
+
+        .btn-generate:active {
+            transform: none;
+        }
+
+        /* ─── TOAST ─── */
+        #toast-container {
+            position: fixed;
+            top: 22px;
+            right: 22px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            box-shadow: var(--shadow-lg);
+            font-size: 0.88rem;
+            font-weight: 500;
+            min-width: 260px;
+            border-left: 4px solid var(--green);
+            animation: toastIn .32s cubic-bezier(.22, 1, .36, 1) both;
+            pointer-events: all;
+        }
+
+        .toast-item.err {
+            border-left-color: var(--red);
+        }
+
+        .toast-icon {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .toast-item:not(.err) .toast-icon {
+            color: var(--green);
+        }
+
+        .toast-item.err .toast-icon {
+            color: var(--red);
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+        }
+
+        @keyframes toastOut {
+            to {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+        }
+
+        /* ─── MISC ─── */
+        .section-separator {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, var(--slate-200) 30%, var(--slate-200) 70%, transparent 100%);
+            margin: 4px 0 22px;
+        }
+
+        @media (max-width: 640px) {
+            .topbar {
+                padding: 0 16px;
+                gap: 10px;
+            }
+
+            .topbar-appname {
+                font-size: 0.95rem;
+            }
+
+            .page-body {
+                padding: 24px 12px 60px;
+            }
+
+            .hero {
+                padding: 28px 24px;
+                gap: 16px;
+            }
+
+            .hero-icon {
+                width: 52px;
+                height: 52px;
+                font-size: 1.6rem;
+            }
+
+            .hero-text h1 {
+                font-size: 1.4rem;
+            }
+
+            .card-body,
+            .card-head {
+                padding: 18px;
+            }
+
+            .grid-3,
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="toast-container"></div>
+
+    <!-- ═══ TOP BAR ═══ -->
+    <nav class="topbar">
+        <img src="/static/images/Acadeno_Logo_Final.png" alt="Acadeno" class="topbar-logo">
+        <div class="topbar-divider"></div>
+        <div class="topbar-appname">Acadeno <span>Certificate Generator</span></div>
+        <div class="topbar-spacer"></div>
+        <span class="topbar-badge">Acadeno Technologies</span>
+        <a href="/dashboard" class="btn-nav-db" style="display: flex; align-items: center; gap: 6px; background: var(--blue-light); color: var(--blue); border: 1.5px solid var(--blue); border-radius: var(--radius-sm); padding: 8px 16px; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: all .2s;">
+            <i class="bi bi-database-fill-gear"></i> View Database & Export Excel
+        </a>
+        <button class="btn-reset" id="clearDbBtn">
+            <i class="bi bi-arrow-counterclockwise"></i> Reset Numbers
+        </button>
+    </nav>
+
+    <!-- ═══ PAGE BODY ═══ -->
+    <div class="page-body">
+
+        <!-- HERO BANNER -->
+        <div class="hero">
+            <div class="hero-text">
+                <h1>Certificate Generator</h1>
+                <p>Generate professional Acadeno certificates in bulk via Excel, or individually with ease.</p>
+            </div>
+            <img src="/static/images/Acadeno_Logo_Final.png" alt="Acadeno" class="hero-logo">
+        </div>
+
+        <form method="post" enctype="multipart/form-data" id="mainForm">
+            <input type="hidden" name="template" value="Certificate_Acadeno.html">
+
+            <!-- ═══ CARD 1 — Certificate Type ═══ -->
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon-wrap orange"><i class="bi bi-award"></i></div>
+                    <div class="card-head-text">
+                        <div class="card-head-title">Certificate Type</div>
+                        <div class="card-head-sub">Sets the heading and number code on the certificate</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="field">
+                        <label class="field-label">Select Type</label>
+                        <!-- Hidden fallback select for form submission -->
+                        <select name="cert_type" id="certTypeSelect" style="display:none;">
+                            <option value="auto" selected>auto</option>
+                            <option value="internship">internship</option>
+                            <option value="industrial_visit">industrial_visit</option>
+                            <option value="project">project</option>
+                            <option value="appreciation">appreciation</option>
+                            <option value="workshop">workshop</option>
+                        </select>
+                        <div class="type-pills" id="typePills">
+                            <div class="type-pill">
+                                <input type="radio" name="_cert_type_ui" id="tp_auto" value="auto" checked>
+                                <label for="tp_auto"><i class="bi bi-magic"></i> Auto-detect <span
+                                        class="code-badge">AUTO</span></label>
+                            </div>
+                            <div class="type-pill">
+                                <input type="radio" name="_cert_type_ui" id="tp_intern" value="internship">
+                                <label for="tp_intern">Internship <span class="code-badge">C</span></label>
+                            </div>
+                            <div class="type-pill">
+                                <input type="radio" name="_cert_type_ui" id="tp_iv" value="industrial_visit">
+                                <label for="tp_iv">Industrial Visit <span class="code-badge">C</span></label>
+                            </div>
+                            <div class="type-pill">
+                                <input type="radio" name="_cert_type_ui" id="tp_prj" value="project">
+                                <label for="tp_prj">Completion – Project <span class="code-badge">PRJ</span></label>
+                            </div>
+                            <div class="type-pill">
+                                <input type="radio" name="_cert_type_ui" id="tp_app" value="appreciation">
+                                <label for="tp_app">Completion – Appreciation <span
+                                        class="code-badge">INT</span></label>
+                            </div>
+                            <div class="type-pill">
+                                <input type="radio" name="_cert_type_ui" id="tp_ws" value="workshop">
+                                <label for="tp_ws">Participation – Workshop <span class="code-badge">WS</span></label>
+                            </div>
+                        </div>
+                        <div class="field-hint">Auto-detect scans your Excel columns and certificate body for keywords
+                            like "project", "workshop", etc.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ CARD 2 — Bulk Generation ═══ -->
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon-wrap blue"><i class="bi bi-table"></i></div>
+                    <div class="card-head-text">
+                        <div class="card-head-title">Bulk Generation</div>
+                        <div class="card-head-sub">Upload an Excel file to generate multiple certificates</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="field">
+                        <label class="field-label">Upload Excel File (.xlsx / .xls)</label>
+                        <div class="drop-zone" id="dropZone">
+                            <input type="file" name="excel" id="excelFile" accept=".xlsx,.xls">
+                            <div class="dz-icon-wrap"><i class="bi bi-file-earmark-spreadsheet"></i></div>
+                            <div class="dz-title" id="dzTitle">Click to upload or drag & drop</div>
+                            <div class="dz-sub">.xlsx or .xls files only</div>
+                        </div>
+                        <div class="excel-badge" id="excelBadge">
+                            <i class="bi bi-check-circle-fill" style="font-size:1.2rem;"></i>
+                            <span id="excelBadgeText">Loaded — 0 rows detected</span>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="start_number">Starting Number <span
+                                class="opt">(optional)</span></label>
+                        <input type="number" name="start_number" id="start_number" class="form-control"
+                            placeholder="Leave blank to auto-continue from the last number">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ CARD 3 — Single Generation ═══ -->
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon-wrap green"><i class="bi bi-person-vcard"></i></div>
+                    <div class="card-head-text">
+                        <div class="card-head-title">Single Generation</div>
+                        <div class="card-head-sub">Generate one certificate manually (no Excel needed)</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="grid-3 field">
+                        <div>
+                            <label class="field-label" for="student_name">Student / Participant Name</label>
+                            <input type="text" name="student_name" id="student_name" class="form-control"
+                                placeholder="e.g. Priya Ramesh">
+                        </div>
+                        <div>
+                            <label class="field-label" for="single_date">Issue Date</label>
+                            <input type="date" name="single_date" id="single_date" class="form-control">
+                        </div>
+                        <div>
+                            <label class="field-label" for="single_place">Place</label>
+                            <input type="text" name="single_place" id="single_place" class="form-control"
+                                placeholder="e.g. Chennai">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ CARD 4 — Certificate Body ═══ -->
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon-wrap slate"><i class="bi bi-file-text"></i></div>
+                    <div class="card-head-text">
+                        <div class="card-head-title">Certificate Body Template</div>
+                        <div class="card-head-sub">Write the paragraph that appears on the certificate</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="field">
+                        <label class="field-label" for="contentArea">Body Text <span
+                                style="color:var(--red)">*</span></label>
+                        <textarea name="content" id="contentArea" class="form-control" rows="9" required>This is to certify that {{ student_name }} from {{ college_name }}, {{ college_location }},
+studying {{ course_name }} ({{ semester }} semester) with Registration ID: {{ reg_id }},
+has successfully completed the {{ internship_program }} internship program
+for a duration of {{ internship_duration }}.
+
+Date: {{ issue_date }}
+Place: {{ place }}</textarea>
+                        <div class="field-hint">
+                            Use <code>{{ column_name }}</code> to insert values from your Excel columns or the
+                            single-entry fields above.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ GENERATE BUTTON ═══ -->
+            <button type="submit" class="btn-generate" id="generateBtn">
+                <i class="bi bi-lightning-charge-fill"></i> Generate Certificate(s)
+            </button>
+
+        </form>
+    </div>
+
+    <script>
+        // ── PILL → SELECT SYNC ──
+        const pillRadios = document.querySelectorAll('input[name="_cert_type_ui"]');
+        const certSelect = document.getElementById('certTypeSelect');
+        pillRadios.forEach(r => {
+            r.addEventListener('change', () => { certSelect.value = r.value; });
+        });
+
+        // ── DROP ZONE ──
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('excelFile');
+        const dzTitle = document.getElementById('dzTitle');
+        const badge = document.getElementById('excelBadge');
+        const badgeTxt = document.getElementById('excelBadgeText');
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length) handleFile(fileInput.files[0]);
+        });
+
+        ['dragenter', 'dragover'].forEach(e => dropZone.addEventListener(e, ev => {
+            ev.preventDefault(); dropZone.classList.add('hovering');
+        }));
+        ['dragleave', 'dragend'].forEach(e => dropZone.addEventListener(e, () => {
+            dropZone.classList.remove('hovering');
+        }));
+        dropZone.addEventListener('drop', ev => {
+            ev.preventDefault();
+            dropZone.classList.remove('hovering');
+            const f = ev.dataTransfer.files[0];
+            if (f) {
+                // Transfer to real file input
+                const dt = new DataTransfer();
+                dt.items.add(f);
+                fileInput.files = dt.files;
+                handleFile(f);
+            }
+        });
+
+        async function handleFile(file) {
+            dzTitle.textContent = file.name;
+            dropZone.classList.add('file-ready');
+            badge.classList.remove('show');
+            const fd = new FormData();
+            fd.append('excel', file);
+            try {
+                const res = await fetch('/preview_columns?t=' + Date.now(), { method: 'POST', body: fd });
+                const data = await res.json();
+                if (data.success) {
+                    badgeTxt.textContent = `File ready — ${data.row_count} rows will be processed`;
+                    badge.classList.add('show');
+                }
+            } catch (_) { }
+        }
+
+        // ── SUBMIT LOADING STATE & FETCH ──
+        const form = document.getElementById('mainForm');
+        const btn = document.getElementById('generateBtn');
+
+        // Add spinner style once
+        const spinStyle = document.createElement('style');
+        spinStyle.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
+        document.head.appendChild(spinStyle);
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Stop standard form submission
+
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<span style="display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.5);border-top-color:#fff;border-radius:50%;animation:spin .65s linear infinite"></span> Generating…`;
+            btn.disabled = true;
+
+            try {
+                const formData = new FormData(form);
+                const res = await fetch('/', { method: 'POST', body: formData });
+
+                if (res.ok) {
+                    // Determine filename from Content-Disposition header if possible
+                    let filename = "certificates.zip";
+                    const disposition = res.headers.get('Content-Disposition');
+                    if (disposition && disposition.includes('attachment')) {
+                        const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                        const matches = filenameRegex.exec(disposition);
+                        if (matches != null && matches[1]) {
+                            filename = matches[1].replace(/['"]/g, '');
+                        }
+                    }
+
+                    // Get the file blob
+                    const blob = await res.blob();
+
+                    // Check if the response is actually JSON error (sometimes APIs do this)
+                    if (blob.type === "application/json") {
+                        const text = await blob.text();
+                        const data = JSON.parse(text);
+                        if (data.error) showToast(data.error, 'error');
+                        else showToast("Something went wrong", 'error');
+                    } else if (blob.type.includes("text/html")) {
+                        showToast("Error: Upload Excel or enter Student Name", 'error');
+                    } else {
+                        // Trigger download
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.style.display = 'none';
+                        a.href = url;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        a.remove();
+
+                        showToast('Generation complete!', 'success');
+                    }
+                } else {
+                    // Handle non-200 responses
+                    let errMsg = "Server error occurred.";
+                    try {
+                        const errData = await res.json();
+                        if (errData.error) errMsg = errData.error;
+                    } catch (err) { }
+                    showToast(errMsg, 'error');
+                }
+            } catch (err) {
+                showToast("Network error or server disconnected", 'error');
+            } finally {
+                // Reset button!
+                btn.innerHTML = `<i class="bi bi-check2-circle"></i> Complete!`;
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 3000);
+            }
+        });
+
+        // ── TOAST ──
+        const tc = document.getElementById('toast-container');
+        function showToast(msg, type = 'success') {
+            const t = document.createElement('div');
+            t.className = 'toast-item' + (type === 'error' ? ' err' : '');
+            t.innerHTML = `<i class="bi ${type === 'success' ? 'bi-check-circle-fill' : 'bi-x-circle-fill'} toast-icon"></i><span>${msg}</span>`;
+            tc.appendChild(t);
+            setTimeout(() => {
+                t.style.animation = 'toastOut .28s ease forwards';
+                setTimeout(() => t.remove(), 290);
+            }, 3500);
+        }
+
+        // ── RESET DB ──
+        document.getElementById('clearDbBtn').addEventListener('click', async () => {
+            if (!confirm('Reset all certificate numbering counters to 0001?\n\nThis cannot be undone.')) return;
+            try {
+                const res = await fetch('/clear_db', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    showToast(data.message, 'success');
+                    setTimeout(() => location.reload(), 1700);
+                } else {
+                    showToast(data.error, 'error');
+                }
+            } catch (_) { showToast('Server unreachable', 'error'); }
+        });
+    </script>
+</body>
+
+</html>

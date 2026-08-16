@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Certificate of Internship</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Great+Vibes&family=Poppins:wght@300;400;500&family=Montserrat:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* @font-face {
+    font-family: 'Montserrat';
+    src: url('/static/fonts/Montserrat-Regular.woff2') format('woff2'),
+         url('/static/fonts/Montserrat-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Parisienne';
+    src: url('/static/fonts/Parisienne-Regular.woff2') format('woff2'),
+         url('/static/fonts/Parisienne-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+} */
+
+        @font-face {
+            font-family: "Montserrat";
+            src: url("{{ url_for('static', filename='fonts/Montserrat-Regular.ttf') }}") format("truetype");
+        }
+
+        @font-face {
+            font-family: "Parisienne";
+            src: url("{{ url_for('static', filename='fonts/Parisienne-Regular.ttf') }}") format("truetype");
+        }
+
+
+        @font-face {
+            font-family: "LaLuxes";
+            src: url("fonts/la-luxes-script-webfont.woff") format("woff");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            margin: 0;
+            background: #ffffff;
+            font-family: "Poppins", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .certificate-container {
+            width: 210mm;
+            height: 297mm;
+            padding: 35mm 25mm;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        /* .vertical-text {
+        position: absolute;
+        left: -155px;
+        top: 50%;
+        transform: translateY(-50%) rotate(-90deg);
+        font-size: 170px;
+        font-family: "Great Vibes", cursive;
+        opacity: 0.12;
+        z-index: 0;
+    } */
+        /* .vertical-text {
+    position: absolute; 
+    /* left: -160px;              /* fine-tune based on page width */
+        /* top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    
+    font-size: 170px;
+    font-family: 'LaLuxes', cursive;
+    font-weight: normal;
+
+    color: #000;               /* signature-like ink color */
+        /*opacity: 0.5;             /* lighter watermark look */
+
+        /*letter-spacing: 2px;       /* improves flow */
+        /*white-space: nowrap;
+
+    pointer-events: none;      /* avoids interaction issues */
+        /*z-index: 0; 
+}*/
+
+        .vertical-img {
+            position: absolute;
+            left: 0%;
+            /* adjust based on layout */
+            top: 50%;
+            transform: translateY(-50%);
+            height: 95%;
+            /* scale to page size */
+            opacity: 1;
+            /* watermark look */
+            pointer-events: none;
+            z-index: -1;
+        }
+
+
+        .header {
+            text-align: center;
+            margin-top: 10mm;
+            z-index: 2;
+            position: relative;
+        }
+
+        .logo {
+            width: 350px !important;
+            position: absolute;
+            left: -10mm;
+            top: -50mm;
+        }
+
+        .gold-badge {
+            position: absolute;
+            right: 20mm;
+            top: 10mm;
+            width: 110px;
+        }
+
+        .main-title {
+            font-family: "Playfair Display", serif;
+            font-size: 36px;
+            letter-spacing: 4px;
+            margin-top: 20mm;
+            margin-left: 100px;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            margin-top: -10px;
+            margin-bottom: 12mm;
+            color: #444;
+            margin-left: 100px;
+            font-style: italic;
+        }
+
+        /* .line {
+        width: 40%;
+        margin-left: 50px;
+        border-top: 1px solid #333;
+        border: none;
+    } */
+
+        /* hr.small-line {
+        width: 100%;
+        margin: 5px 0;
+        border-top: 1px solid #333;
+        border: none;
+    } */
+
+        .content-area {
+            margin-bottom: 20mm;
+        }
+
+        .student-name {
+            font-size: 50px;
+            font-family: "Great Vibes", cursive;
+            font-style: italic;
+            text-align: center;
+            margin-left: 100px;
+            margin-top: -20px;
+            margin-bottom: 8px;
+            /* border-bottom: 1px solid #000; */
+            padding-bottom: 5px;
+            color: rgb(32, 171, 213);
+            letter-spacing: 2px;
+            word-spacing: 12px;
+            white-space: nowrap;
+        }
+
+        .certificate-text {
+            text-align: justify;
+            text-justify: inter-word;
+            margin-left: 100px;
+            font-size: 14px;
+            font-style: normal;
+            line-height: 1.8;
+        }
+
+        .certificate-text strong {
+            font-weight: 700;
+        }
+
+
+        .bottom-section {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0mm;
+            margin-left: 100px;
+            font-size: 14px;
+        }
+
+        .seal {
+            width: 80px;
+            margin-top: 17mm;
+            margin-left: 50mm;
+        }
+
+        .signature-img {
+            width: 160px;
+        }
+
+        .signature-block {
+            margin-top: 4mm;
+            text-align: center;
+            letter-spacing: 3px;
+            font-size: 14px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 8mm;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ✅ FOOTER FIX */
+        .footer-text {
+            margin-top: 8px;
+            white-space: nowrap;
+            /* keeps text in one line */
+
+        }
+
+        .company-name {
+            font-family: "Montserrat", sans-serif;
+            letter-spacing: 3px;
+            word-spacing: 3px;
+            color: #000000;
+            font-weight: bold;
+            font-size: 18px;
+            transform: translateX(-40px);
+            margin: 0 0 4px 0;
+            text-align: center;
+        }
+
+        .division-name {
+            font-family: "Montserrat", sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            color: #333;
+            text-align: center;
+            transform: translateX(-40px);
+            margin: 0 0 6px 0;
+        }
+
+        .company-details {
+            letter-spacing: 0.5px;
+            transform: translateX(-40px);
+            color: #444;
+            margin: 0;
+            text-align: center;
+        }
+
+        .footer img {
+            width: 60px;
+            opacity: 0.6;
+        }
+
+        .red-badge img {
+            opacity: 1;
+            z-index: -1;
+        }
+
+        /* .gov-login {
+        margin-right: 15px;
+        width: 800px;
+        height: 80px;
+    } */
+
+        .footer-logos-row {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            align-items: center;
+            margin-top: -20px;
+            margin-bottom: 10px;
+        }
+
+        .cert-number {
+            white-space: nowrap;
+        }
+
+        .semester-suffix {
+            vertical-align: super;
+            font-size: 0.6em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="certificate-container">
+
+        <!-- <div class="vertical-text">Certificate</div> -->
+        <img src="{{ base_url }}/static/images/la-luxes-script.png" class="vertical-img">
+
+
+        <img src="{{ base_url }}/static/images/badge.png" class="gold-badge">
+
+        <div class="header">
+            <img src="{{ base_url }}/static/images/Acadeno_Logo_Final.png" class="logo">
+
+            <h2 class="main-title">CERTIFICATE OF<br>{{ certificate_title or 'INTERNSHIP' }}</h2>
+            <div class="subtitle">this is to certify that</div>
+
+
+
+            <div class="content-area">
+                <div class="student-name" style="{{ student_name_style }}">{{ student_name }}</div>
+
+                <div style="margin-left: 180px; border-bottom: 1px solid black; width: 350px;"></div>
+                <br>
+                <div class="certificate-text">
+                    {{ certificate_body | safe }}
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-section">
+            <div>
+                <div style="display:flex; gap:10px; white-space:nowrap;">
+                    <p style="margin-top: -15px;"><b>CERT NO:</b>
+                        {{ certificate_number }} <br></p>
+
+                </div>
+                <!-- <p style="letter-spacing: 2px; margin-left: -10px;"><strong>CERT NO:</strong></p> {{ certificate_number }}<br> -->
+                <div
+                    style="height: 100px; width: 190px; border-bottom: 1px solid black; margin-top: -100px;margin-left: 0px;">
+                </div>
+                <div style="margin-top: 8px; text-align: center;">
+                    {% if issue_date %}
+                    DATE : {{ issue_date }}<br>
+                    {% elif single_issue_date %}
+                    DATE : {{ single_issue_date }}<br>
+                    {% endif %}
+
+                    {% if place %}
+                    PLACE : {{ place }}<br>
+                    {% elif single_place %}
+                    PLACE : {{ single_place }}<br>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <div class="signature-block">
+                <img src="{{ base_url }}/static/images/sign.png" class="signature-img" style="margin-top: -110px;"><br>
+                <div
+                    style="height: 100px; width: 180px; border-bottom: 1px solid black; margin-top: -113px;margin-left: 6px;">
+                </div>
+                <div style="margin-top: 15px;">
+                    <p>SRUTHI E GIREESHAN</p><br>
+                    <p style="font-size: 10px;transform: translateY(-40px);">Director of Operations</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-logos-row">
+                <div>
+                    <img src="{{ base_url }}/static/images/msme.png"
+                        style="height: 80px; width:80px; margin-left: 20px;">
+                </div>
+                <div class="red-badge">
+                    <img src="{{ base_url }}/static/images/red_badge.png"
+                        style="height: 130px;width: 140px; margin-left:-175px">
+                </div>
+                <div class="gov-login">
+                    <img src="{{ base_url }}/static/images/DPIIT_logo.png"
+                        style="width:130px; margin-left: -230px; margin-top: 10px;">
+                </div>
+            </div>
+
+            <div class="footer-text">
+                <p class="company-name">Acadeno Research and Innovation Centre</p>
+                <p class="division-name">(A Division of Acadeno Technologies Private Limited)</p>
+                <p class="company-details">
+                    | Calicut | Kerala | India | CIN: U62099KL2025PTC096721 |
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
